@@ -4,8 +4,8 @@
 struct Room_Node
 {
 	Room room;
-	Room* left;
-	Room* right;
+	Room_Node* left;
+	Room_Node* right;
 
 	int height;
 	int bf;

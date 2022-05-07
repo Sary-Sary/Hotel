@@ -4,23 +4,31 @@
 class Hotel_AVL
 {
 	Room_Node* root;
-
+	 
 	void update(Room_Node* node);
 	Room_Node* balance(Room_Node* node);
 
-	Room_Node* leftLeftCase(Room_Node* node);
-	Room_Node* leftRightCase(Room_Node* node);
-	Room_Node* rightRightCase(Room_Node* node);
-	Room_Node* rightLeftCase(Room_Node* node);
+	Room_Node* left_left_case(Room_Node* node);
+	Room_Node* left_right_case(Room_Node* node);
+	Room_Node* right_right_case(Room_Node* node);
+	Room_Node* right_left_case(Room_Node* node);
 
-	Room_Node* rotateLeft(Room_Node* node);
-	Room_Node* rotateRight(Room_Node* node);
+	Room_Node* rotate_left(Room_Node* node);
+	Room_Node* rotate_right(Room_Node* node);
 
-	Room_Node* insert(Room_Node* tree, const Room& x);
+	Room_Node* insert(Room_Node* tree, const Room& new_room);
+	
+	void free(Room_Node* tree);
+	Room_Node* clone(Room_Node* tree);
+
+	//void register_guest();
 
 	//register guest
 	//free rooms [date]
-	//free a room [room_numbeS
+	//free a room [room_number]
+	//free room inquiry [date, date]
+	//find room [beds]
+	//close room [note]
 
 public:
 
