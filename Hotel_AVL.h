@@ -25,14 +25,14 @@ class Hotel_AVL
 	bool register_guest(Room_Node* tree, int room_number, std::string name, Date start_date, Date end_date, std::string note);
 	void all_free_rooms_during_date(std::list <Room>& free_rooms, Room_Node* tree, Date date);
 	bool free_a_room(Room_Node* tree, int room_number);
-	//
-	void find_room(Room_Node* tree, int current_min_amount_of_beds, const int min_amount_of_beds_needed, Room& room);
+	void closed_room_inquiry(Room_Node* tree, std::list <Room>& taken_rooms, Date start_date, Date end_date);
+	void find_room_min_beds
+			(Room_Node* tree, int current_min_amount_of_beds, const int min_amount_of_beds_needed, Room& room, bool& at_least_one_room_was_found);
 	bool close_room(Room_Node* tree, const int room_number, const std::string note, const Date start_date, const Date end_date);
 
 	void max_beds(Room_Node* tree, int& max_amount_of_beds);
 
 	//free room inquiry [date, date]
-	//close room [note]
 
 public:
 
@@ -41,5 +41,11 @@ public:
 	Hotel_AVL& operator=(const Hotel_AVL& other);
 	~Hotel_AVL();
 
+	bool register_guest(int room_number, std::string name, Date start_date, Date end_date, std::string note);
+	void all_free_rooms_during_date(std::list <Room>& free_rooms, Date date);
+	bool free_a_room(int room_number);
+	void closed_room_inquiry(std::list <Room>& taken_rooms, Date start_date, Date end_date);
+	void find_room_min_beds(const int min_amount_of_beds_needed, Room& room, bool& at_least_one_room_was_found);
+	bool close_room(const int room_number, const std::string note, const Date start_date, const Date end_date);
 };
 

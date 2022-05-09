@@ -54,13 +54,13 @@ public:
 
 	//Getters
 
-	int get_room_number();
-	int get_amount_of_beds();
-	bool get_is_room_closed();
-	std::string get_note();
-	std::string get_guest_name();
-	Date get_start_date();
-	Date get_end_date();
+	int get_room_number() const;
+	int get_amount_of_beds() const;
+	bool get_is_room_closed() const;
+	std::string get_note() const;
+	std::string get_guest_name() const;
+	Date get_start_date() const;
+	Date get_end_date() const;
 
 	//Setters
 	void set_room_number(int new_number);
@@ -74,6 +74,7 @@ public:
 	void free_room();
 
 	int amount_of_days_room_is_taken();
+	bool room_is_closed_for_period(Date period_start, Date period_end);
 
 };
 

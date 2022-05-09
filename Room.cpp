@@ -64,13 +64,13 @@ bool Room::operator< (const int& room) {
 
 }
 
-int Room::get_room_number() { return room_number; }
-int Room::get_amount_of_beds() { return amount_of_beds; }
-bool Room::get_is_room_closed() { return room_is_closed; }
-std::string Room::get_note() { return note; }
-std::string Room::get_guest_name() { return guest_name; }
-Date Room::get_start_date() { return start_date; }
-Date Room::get_end_date() { return end_date; }
+int Room::get_room_number() const { return room_number; }
+int Room::get_amount_of_beds() const { return amount_of_beds; }
+bool Room::get_is_room_closed() const { return room_is_closed; }
+std::string Room::get_note() const { return note; }
+std::string Room::get_guest_name() const { return guest_name; }
+Date Room::get_start_date() const { return start_date; }
+Date Room::get_end_date() const { return end_date; }
 
 void Room::set_room_number(int new_number) {
 
@@ -113,8 +113,8 @@ void Room::close_room(std::string new_note, Date start_date, Date end_date) {
 
 	if (room_is_closed == true && guest_name != "") {
 
-		std::cout << "\nRoom is taken. Please free the room "
-
+		std::cout << "\nRoom is taken. Please free the room before closing it.";
+		return;
 	}
 
 	room_is_closed = true;
@@ -142,6 +142,12 @@ void Room::open_room() {
 
 //Function to add a guest
 void Room::add_guest(std::string guest, std::string new_note) {
+
+	if (room_is_closed == true) {
+
+		if (guest_name != "") std::cout << "\nRoom is already taken. Please chose another room.";
+		else std::cout << "\nRoom is closed.";
+	}
 
 	set_guest_name(guest);
 	set_note(new_note);
@@ -178,3 +184,10 @@ void Room::free_room() {
 	return;
 }
 
+bool Room::room_is_closed_for_period(Date period_start, Date period_end) {
+
+	if (room_is_closed == false) return false;
+	return period_start > start_date && period_end < end_date;
+}
+
+int Room::amount_of_days_room_is_taken() { return start_date - end_date; }
