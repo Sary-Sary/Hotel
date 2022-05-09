@@ -39,8 +39,12 @@ public:
 	bool operator> (const Room& room);
 	bool operator< (const Room& room);
 
+	bool operator== (const int& room);
+	bool operator> (const int& room);
+	bool operator< (const int& room);
+
 	//Function to close a room
-	void close_room(std::string new_note);
+	void close_room(std::string new_note, Date start_date, Date end_date);
 
 	//Function to open a room
 	void open_room();
@@ -49,19 +53,6 @@ public:
 	void add_guest(std::string guest, std::string new_note);
 
 	//Getters
-	/*
-	
-	int room_number;
-	int amount_of_beds;
-
-	bool room_is_closed;
-	std::string note;
-
-	std::string guest_name;
-
-	Date start_date;
-	Date end_date;
-	*/
 
 	int get_room_number();
 	int get_amount_of_beds();
@@ -79,7 +70,8 @@ public:
 	void set_start_date(Date new_start_date);
 	void set_end_date(Date new_end_date);
 
-	void register_new_guest();
+	void register_new_guest(std::string guest_name, Date start_date, Date end_date, std::string note);
+	void free_room();
 
 	int amount_of_days_room_is_taken();
 

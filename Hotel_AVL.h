@@ -1,5 +1,6 @@
 #pragma once
 #include "Room_Node.h"
+#include <list>
 
 class Hotel_AVL
 {
@@ -21,13 +22,16 @@ class Hotel_AVL
 	void free(Room_Node* tree);
 	Room_Node* clone(Room_Node* tree);
 
-	//void register_guest();
+	bool register_guest(Room_Node* tree, int room_number, std::string name, Date start_date, Date end_date, std::string note);
+	void all_free_rooms_during_date(std::list <Room>& free_rooms, Room_Node* tree, Date date);
+	bool free_a_room(Room_Node* tree, int room_number);
+	//
+	void find_room(Room_Node* tree, int current_min_amount_of_beds, const int min_amount_of_beds_needed, Room& room);
+	bool close_room(Room_Node* tree, const int room_number, const std::string note, const Date start_date, const Date end_date);
 
-	//register guest
-	//free rooms [date]
-	//free a room [room_number]
+	void max_beds(Room_Node* tree, int& max_amount_of_beds);
+
 	//free room inquiry [date, date]
-	//find room [beds]
 	//close room [note]
 
 public:

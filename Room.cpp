@@ -43,15 +43,84 @@ bool Room::operator> (const Room& room) {
 
 bool Room::operator< (const Room& room) {
 
-	return !(*this > room);
+	return !(*this > room) && room_number != room.room_number;
 
 }
 
+bool Room::operator== (const int& room) {
+
+	return room_number == room;
+
+}
+
+bool Room::operator> (const int& room) {
+
+	return room_number > room;
+
+}
+bool Room::operator< (const int& room) {
+
+	return room_number < room;
+
+}
+
+int Room::get_room_number() { return room_number; }
+int Room::get_amount_of_beds() { return amount_of_beds; }
+bool Room::get_is_room_closed() { return room_is_closed; }
+std::string Room::get_note() { return note; }
+std::string Room::get_guest_name() { return guest_name; }
+Date Room::get_start_date() { return start_date; }
+Date Room::get_end_date() { return end_date; }
+
+void Room::set_room_number(int new_number) {
+
+	room_number = new_number;
+	return;
+}
+
+void Room::set_amount_of_beds(int new_amount_of_beds) {
+
+	amount_of_beds = new_amount_of_beds;
+	return;
+}
+
+void Room::set_note(std::string new_note) {
+
+	note = new_note;
+	return;
+}
+
+void Room::set_guest_name(std::string new_guest) {
+
+	guest_name = new_guest;
+	return;
+}
+
+void Room::set_start_date(Date new_start_date) {
+
+	start_date = new_start_date;
+	return;
+}
+
+void Room::set_end_date(Date new_end_date) {
+
+	end_date = new_end_date;
+	return;
+}
+
 //Function to close a room
-void Room::close_room(std::string new_note) {
+void Room::close_room(std::string new_note, Date start_date, Date end_date) {
+
+	if (room_is_closed == true && guest_name != "") {
+
+		std::cout << "\nRoom is taken. Please free the room "
+
+	}
 
 	room_is_closed = true;
-	note = new_note;
+	set_note(new_note);
+	set_start_date(start_date);
+	set_end_date(end_date);
 
 	return;
 
@@ -61,7 +130,11 @@ void Room::close_room(std::string new_note) {
 void Room::open_room() {
 
 	room_is_closed = false;
+	guest_name = "";
 	note = "";
+
+	set_start_date(Date());
+	set_end_date(Date());
 
 	return;
 
@@ -70,10 +143,38 @@ void Room::open_room() {
 //Function to add a guest
 void Room::add_guest(std::string guest, std::string new_note) {
 
-	guest_name = guest;
-	note = new_note;
+	set_guest_name(guest);
+	set_note(new_note);
 	room_is_closed = true;
 
 	return;
 
 }
+
+void Room::register_new_guest(std::string guest_name, Date start_date, Date end_date, std::string note) {
+
+	if (room_is_closed = true) {
+
+		std::cout << "\nGuest could not be registered as the room is closed. Please chose a new room.";
+		return;
+	}
+
+	add_guest(guest_name, note);
+	set_start_date(start_date);
+	set_end_date(end_date);
+	return;
+}
+
+void Room::free_room() {
+
+	if (room_is_closed == true) {
+
+		std::cout << "\nRoom is already open";
+		return;
+
+	}
+
+	open_room();
+	return;
+}
+

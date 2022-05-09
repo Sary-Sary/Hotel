@@ -150,3 +150,111 @@ Room_Node* Hotel_AVL::insert(Room_Node* tree, const Room& new_room) {
 	return balance(tree);
 
 }
+
+bool Hotel_AVL::register_guest(Room_Node* node, int room_number, std::string guest_name, Date start_date, Date end_date, std::string note) {
+
+	if (node == nullptr) return false;
+
+	if (node->room == room_number) {
+
+		node->room.register_new_guest(guest_name, start_date, end_date,note);
+		return true;
+	}
+
+	if (node->room > room_number) return register_guest(node->left, room_number, guest_name, start_date, end_date, note);
+	return register_guest(node->right, room_number, guest_name, start_date, end_date, note);
+
+}
+
+void Hotel_AVL::all_free_rooms_during_date(std::list <Room>& all_free_rooms, Room_Node* tree, Date date) {
+
+	if (tree == nullptr) return;
+
+	if (tree->room.get_is_room_closed() == false) {
+
+		all_free_rooms_during_date(all_free_rooms, tree->left, date);
+		all_free_rooms_during_date(all_free_rooms, tree->right, date);
+		return;
+
+	}
+
+	if (tree->room.get_start_date() < date && tree->room.get_end_date() > date) {
+
+		all_free_rooms_during_date(all_free_rooms, tree->left, date);
+		all_free_rooms_during_date(all_free_rooms, tree->right, date);
+		return;
+
+	}
+
+	all_free_rooms.push_back(tree->room);
+	all_free_rooms_during_date(all_free_rooms, tree->left, date);
+	all_free_rooms_during_date(all_free_rooms, tree->right, date);
+	return;
+
+}
+
+bool Hotel_AVL::free_a_room(Room_Node* tree, int room_number) {
+
+	if (tree == nullptr) return;
+
+	if (tree->room == room_number) {
+
+		tree->room.free_room();
+		return true;
+
+	}
+
+	if (tree->room > room_number) return free_a_room(tree->left, room_number);
+	return free_a_room(tree->right, room_number);
+
+}
+
+void Hotel_AVL::max_beds(Room_Node* tree, int& max_amount_of_beds) {
+
+	if (tree == nullptr) return;
+
+	if (tree->room.get_amount_of_beds() > max_amount_of_beds) {
+
+		max_amount_of_beds = tree->room.get_amount_of_beds();
+
+	}
+
+	max_beds(tree->left, max_amount_of_beds);
+	max_beds(tree->right, max_amount_of_beds);
+	return;
+
+}
+
+void Hotel_AVL::find_room(Room_Node* tree, int current_min_amount_of_beds, const int min_amount_of_beds_needed, Room& room) {
+
+	if (tree == nullptr) return;
+
+	if (tree->room.get_amount_of_beds() >= min_amount_of_beds_needed) {
+
+		if (tree->room.get_amount_of_beds() < current_min_amount_of_beds) {
+
+			current_min_amount_of_beds = tree->room.get_amount_of_beds();
+			room = tree->room;
+		}
+
+	}
+
+	find_room(tree->left, current_min_amount_of_beds, min_amount_of_beds_needed, room);
+	find_room(tree->right, current_min_amount_of_beds, min_amount_of_beds_needed, room);
+	return;
+}
+
+bool Hotel_AVL::close_room(Room_Node* tree, const int room_number, const std::string note, const Date start_date, const Date end_date) {
+
+	if (tree == nullptr) return false;
+
+	if (tree->room == room_number) {
+
+		tree->room.close_room(note, start_date, end_date);
+		return true;
+	}
+
+	if (tree->room > room_number) return close_room(tree->left, room_number, note, start_date, end_date);
+	return close_room(tree->right, room_number, note, start_date, end_date);
+
+}
