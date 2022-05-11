@@ -8,7 +8,7 @@ Room :: Room(const int room_number, const int amount_of_beds) : room_number(room
 
 //Room busy from Date A to Date B
 Room :: Room(const int room_number, const int amount_of_beds, const Date start_date, const Date end_date, const std::string guest_name, const std::string note) :
-	room_number(room_number), amount_of_beds(amount_of_beds), start_date(start_date), end_date(end_date), guest_name(guest_name), note(note), room_is_closed(false) {}
+	room_number(room_number), amount_of_beds(amount_of_beds), start_date(start_date), end_date(end_date), guest_name(guest_name), note(note), room_is_closed(true) {}
 
 //Closed room without a guest
 Room :: Room(const int room_number, const int amount_of_beds, const std::string note) :
@@ -16,7 +16,7 @@ Room :: Room(const int room_number, const int amount_of_beds, const std::string 
 
 //Room busy from Date A to Date B with a note
 Room :: Room(const int room_number, const int amount_of_beds, const Date start_date, const Date end_date, const std::string note) :
-	room_number(room_number), amount_of_beds(amount_of_beds), start_date(start_date), end_date(end_date), note(note), room_is_closed(false) {}
+	room_number(room_number), amount_of_beds(amount_of_beds), start_date(start_date), end_date(end_date), note(note), room_is_closed(true) {}
 
 Room Room::operator= (const Room& room) {
 
@@ -190,4 +190,60 @@ bool Room::room_is_closed_for_period(Date period_start, Date period_end) {
 	return period_start > start_date && period_end < end_date;
 }
 
-int Room::amount_of_days_room_is_taken() { return start_date - end_date; }
+int Room::amount_of_days_room_is_taken() { return end_date - start_date; }
+
+void Room::read_from_file(std::ifstream& my_file) {
+
+	size_t size;
+	char* data;
+
+	my_file.read((char*)&room_number, sizeof(room_number));
+
+	my_file.read((char*)&amount_of_beds, sizeof(amount_of_beds));
+
+	my_file.read((char*)&room_is_closed, sizeof(room_is_closed));
+
+	my_file.read((char*)&size, sizeof(size));
+	data = new char[size + 1];
+	my_file.read(data, size);
+	data[size] = '\0';
+	set_note(data);
+	delete data;
+
+	my_file.read((char*)&size, sizeof(size));
+	data = new char[size + 1];
+	my_file.read(data, size);
+	data[size] = '\0';
+	set_guest_name(data);
+	delete data;
+
+	start_date.read_from_file(my_file);
+	end_date.read_from_file(my_file);
+	
+	return;
+
+}
+
+void Room::write_to_file(std::ofstream& my_file) {
+
+	my_file.write((char*)&room_number, sizeof(room_number));
+	my_file.write((char*)&amount_of_beds, sizeof(amount_of_beds));
+
+	my_file.write((char*)&room_is_closed, sizeof(room_is_closed));
+
+	size_t size;
+
+	size = note.size();
+	my_file.write((char*)&size, sizeof(size));
+	my_file.write((char*)note.c_str(), size);
+
+	size = guest_name.size();
+	my_file.write((char*)&size, sizeof(size));
+	my_file.write((char*)guest_name.c_str(), size);
+
+	start_date.write_to_file(my_file);
+	end_date.write_to_file(my_file);
+
+	return;
+
+}

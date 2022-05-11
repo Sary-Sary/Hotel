@@ -76,5 +76,7 @@ public:
 	int amount_of_days_room_is_taken();
 	bool room_is_closed_for_period(Date period_start, Date period_end);
 
+	void read_from_file(std::ifstream& my_file);
+	void write_to_file(std::ofstream& my_file);
 };
 

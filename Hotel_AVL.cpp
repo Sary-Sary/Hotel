@@ -151,6 +151,12 @@ Room_Node* Hotel_AVL::insert(Room_Node* tree, const Room& new_room) {
 
 }
 
+void Hotel_AVL::insert(const Room& new_room) {
+
+	root = insert(root, new_room);
+	return;
+}
+
 bool Hotel_AVL::register_guest(Room_Node* node, int room_number, std::string guest_name, Date start_date, Date end_date, std::string note) {
 
 	if (node == nullptr) return false;
@@ -211,7 +217,7 @@ bool Hotel_AVL::free_a_room(int room_number) {
 }
 bool Hotel_AVL::free_a_room(Room_Node* tree, int room_number) {
 
-	if (tree == nullptr) return;
+	if (tree == nullptr) return false;
 
 	if (tree->room == room_number) {
 

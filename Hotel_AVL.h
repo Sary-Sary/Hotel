@@ -41,6 +41,8 @@ public:
 	Hotel_AVL& operator=(const Hotel_AVL& other);
 	~Hotel_AVL();
 
+	void insert(const Room& new_room);
+
 	bool register_guest(int room_number, std::string name, Date start_date, Date end_date, std::string note);
 	void all_free_rooms_during_date(std::list <Room>& free_rooms, Date date);
 	bool free_a_room(int room_number);

@@ -1,5 +1,7 @@
 #pragma once
 #include <stdexcept>
+#include <fstream>
+#include <ostream>
 #include "Consts.h"
 
 struct Date
@@ -71,7 +73,7 @@ struct Date
 
 	}
 
-	bool operator- (const Date& date) {
+	int operator- (const Date& date) {
 
 		//Formula to conver Julian Calender Day to Julian Day Number
 		// 367 * Y - (7 * (Y + 5001 + (M - 9)/7))/4 + (275 * M)/9 + D + 1729777
@@ -84,6 +86,25 @@ struct Date
 		return julian_day_number1 - julian_day_number2;
 
 	}
+
+	void read_from_file(std::ifstream& my_file) {
+
+		my_file.read((char*)&day, sizeof(day));
+		my_file.read((char*)&month, sizeof(month));
+		my_file.read((char*)&year, sizeof(year));
+		
+		return;
+	}
+
+	void write_to_file(std::ofstream& my_file) {
+
+		my_file.write((char*)&day, sizeof(day));
+		my_file.write((char*)&month, sizeof(month));
+		my_file.write((char*)&year, sizeof(year));
+
+		return;
+	}
+
 };
 
 

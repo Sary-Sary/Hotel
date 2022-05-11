@@ -65,7 +65,7 @@ void register_guest(Hotel_AVL& hotel_rooms) {
 		char change_room = 'a';
 		std::cin >> change_room;
 
-		while (change_room != 'y' || change_room != 'n') {
+		while (change_room != 'y' && change_room != 'n') {
 
 			std::cout << "\nInvalid option. \nPlease insert either y or n: ";
 
@@ -127,7 +127,7 @@ void free_room(Hotel_AVL& hotel_rooms) {
 		char change_room = 'a';
 		std::cin >> change_room;
 
-		while (change_room != 'y' || change_room != 'n') {
+		while (change_room != 'y' && change_room != 'n') {
 
 			std::cout << "\nInvalid option. \nPlease insert either y or n: ";
 
@@ -150,6 +150,7 @@ void free_room(Hotel_AVL& hotel_rooms) {
 std::string close_room_file_name(Date start_date) {
 	
 	std::string name = "report";
+	name += "-";
 	name += std::to_string(start_date.year);
 	name += "-";
 	name += std::to_string(start_date.month);
@@ -162,7 +163,28 @@ std::string close_room_file_name(Date start_date) {
 
 void create_closed_rooms_file(Date start_date, std::list <Room> rooms) {
 
+	std::ofstream my_file;
 
+	std::string file_name = close_room_file_name(start_date);
+	my_file.open(file_name, std::ios::out);
+
+	if (!my_file) {
+
+		std::cerr << "Could not open file.";
+		return;
+
+	}
+
+	for (auto it = rooms.begin(); it != rooms.end(); it++) {
+
+		my_file << "Room: ";
+		my_file << std::to_string(it->get_room_number());
+		my_file << "\nAmount of days: ";
+		my_file << std::to_string(it->amount_of_days_room_is_taken());
+		my_file << "\n___________\n";
+	}
+
+	my_file.close();
 
 }
 
@@ -233,12 +255,12 @@ void close_room(Hotel_AVL& hotel_rooms) {
 
 	while (!found_room) {
 
-		std::cout << "\Could not close room - invalid room. Would you like to the change the room? [y/n]: ";
+		std::cout << "\nCould not close room - invalid room. Would you like to the change the room? [y/n]: ";
 
 		char change_room = 'a';
 		std::cin >> change_room;
 
-		while (change_room != 'y' || change_room != 'n') {
+		while (change_room != 'y' && change_room != 'n') {
 
 			std::cout << "\nInvalid option. \nPlease insert either y or n: ";
 
@@ -257,10 +279,58 @@ void close_room(Hotel_AVL& hotel_rooms) {
 
 }
 
-//close_room
+void read_hotel_rooms(Hotel_AVL& hotel) {
+
+	std::ifstream my_file;
+
+	my_file.open(hotel_file_name, std::ios::binary);
+
+	if (!my_file) {
+
+		std::cerr << "Could not open file.";
+		return;
+
+	}
+
+	Room temp;
+
+	while (my_file) {
+
+		temp.read_from_file(my_file);
+
+		hotel.insert(temp);
+
+	}
+
+	my_file.close();
+
+}
 
 int main()
 {
- 
+	Room r1(5, 3, Date(2, 2, 2022), Date(2, 3, 2022), "Ivo", "a");
+	Room r2(6, 3, Date(2, 2, 2022), Date(9, 2, 2022), "Ira", "");
+
+	std::list <Room> rooms;
+	rooms.push_back(r1);
+	rooms.push_back(r2);
+
+	create_closed_rooms_file(Date(2, 2, 2022), rooms);
+
+	std::ofstream my_file;
+	my_file.open("bb.dat", std::ios::binary);
+
+	r1.write_to_file(my_file);
+
+	my_file.close();
+
+	std::ifstream next_file;
+	next_file.open("bb.dat", std::ios::binary);
+
+	r1.read_from_file(next_file);
+
+	next_file.close();
+
+	std::cout << r1.get_guest_name();
 
 }

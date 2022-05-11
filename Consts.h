@@ -3,6 +3,7 @@
 
 const unsigned month_to_date[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 const unsigned MAX_MONTH = 12;
+const std::string hotel_file_name = "hotel_room.dat";
 
 //Checks if a year is a leapyear. 
 //A leapyear is any year that is divisible by 4, but not divisible by 100, unless it is divisible by 400.
