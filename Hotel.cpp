@@ -294,11 +294,11 @@ void read_hotel_rooms(Hotel_AVL& hotel) {
 
 	Room temp;
 
-	while (my_file) {
+	while (!my_file.eof()) {
 
 		temp.read_from_file(my_file);
 
-		hotel.insert(temp);
+		if (my_file) hotel.insert(temp);
 
 	}
 
@@ -306,31 +306,69 @@ void read_hotel_rooms(Hotel_AVL& hotel) {
 
 }
 
-int main()
-{
-	Room r1(5, 3, Date(2, 2, 2022), Date(2, 3, 2022), "Ivo", "a");
-	Room r2(6, 3, Date(2, 2, 2022), Date(9, 2, 2022), "Ira", "");
+void create_hotel_file() {
 
-	std::list <Room> rooms;
-	rooms.push_back(r1);
-	rooms.push_back(r2);
-
-	create_closed_rooms_file(Date(2, 2, 2022), rooms);
+	Room r1 (100, 3, Date(4, 8, 2022), Date(16, 8, 2022), "Grian", "Pesky bird...");
+	Room r2 (101, 2);
+	Room r3 (102, 2, Date(5, 8, 2022), Date(2, 10, 2022), "Closed for renovations.");
+	Room r4 (200, 3, Date(1, 8, 2022), Date(24, 8, 2022), "Scar", "Hawkeye!");
+	Room r5 (201, 2, Date(8, 8, 2022), Date(5, 9, 2022), "Pearl", "Want some soup, I got some soup~");
+	Room r6 (202, 2, Date(23, 8, 2022), Date(12, 9, 2022), "Scott", "Dang, that's a long name");
+	Room r7 (300, 3, Date(3, 8, 2022), Date(29, 9, 2022), "Definitely no withers here.");
+	Room r8 (301, 2);
+	Room r9 (302, 2);
+	Room r10 (400, 5, Date(8, 8, 2022), Date(9, 9, 2022), "Hermits", "Hermitgang, Hermitgang, Hermitgang");
 
 	std::ofstream my_file;
-	my_file.open("bb.dat", std::ios::binary);
+	my_file.open(hotel_file_name, std::ios::binary);
+
+	if (!my_file) {
+
+		std::cerr << "";
+		return;
+	}
 
 	r1.write_to_file(my_file);
+	r2.write_to_file(my_file);
+	r3.write_to_file(my_file);
+	r4.write_to_file(my_file);
+	r5.write_to_file(my_file);
+	r6.write_to_file(my_file);
+	r7.write_to_file(my_file);
+	r8.write_to_file(my_file);
+	r9.write_to_file(my_file);
+	r10.write_to_file(my_file);
 
 	my_file.close();
 
-	std::ifstream next_file;
-	next_file.open("bb.dat", std::ios::binary);
+	return;
 
-	r1.read_from_file(next_file);
+}
 
-	next_file.close();
+int main()
+{
 
-	std::cout << r1.get_guest_name();
+	create_hotel_file();
+	Hotel_AVL hotel_rooms;
+	read_hotel_rooms(hotel_rooms);
 
+	std::list <Room> rooms_list;
+	hotel_rooms.all_free_rooms_during_date(rooms_list, Date(10, 8, 2022));
+	print_free_rooms(rooms_list);
+
+	rooms_list.clear();
+
+	hotel_rooms.free_a_room(102);
+
+	hotel_rooms.closed_room_inquiry(rooms_list, Date(10, 8, 2022), Date(10, 9, 2022));
+	create_closed_rooms_file(Date(10, 8, 2022), rooms_list);
+
+	Room room;
+	bool bed_found = false;
+
+	hotel_rooms.find_room_min_beds(1, room, bed_found);
+
+	if (!bed_found) std::cout << "\nNo bed found";
+	else std::cout << "\nRoom with min beds: " << room.get_room_number();
+	
 }

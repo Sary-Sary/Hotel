@@ -43,7 +43,7 @@ bool Room::operator> (const Room& room) {
 
 bool Room::operator< (const Room& room) {
 
-	return !(*this > room) && room_number != room.room_number;
+	return room_number < room.room_number;
 
 }
 
@@ -173,7 +173,7 @@ void Room::register_new_guest(std::string guest_name, Date start_date, Date end_
 
 void Room::free_room() {
 
-	if (room_is_closed == true) {
+	if (room_is_closed == false) {
 
 		std::cout << "\nRoom is already open";
 		return;
@@ -194,14 +194,17 @@ int Room::amount_of_days_room_is_taken() { return end_date - start_date; }
 
 void Room::read_from_file(std::ifstream& my_file) {
 
+	if (!my_file) return;
+
 	size_t size;
 	char* data;
 
 	my_file.read((char*)&room_number, sizeof(room_number));
-
 	my_file.read((char*)&amount_of_beds, sizeof(amount_of_beds));
 
 	my_file.read((char*)&room_is_closed, sizeof(room_is_closed));
+
+	if (!my_file) return;
 
 	my_file.read((char*)&size, sizeof(size));
 	data = new char[size + 1];
@@ -219,7 +222,7 @@ void Room::read_from_file(std::ifstream& my_file) {
 
 	start_date.read_from_file(my_file);
 	end_date.read_from_file(my_file);
-	
+
 	return;
 
 }

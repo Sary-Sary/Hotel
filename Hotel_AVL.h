@@ -49,5 +49,7 @@ public:
 	void closed_room_inquiry(std::list <Room>& taken_rooms, Date start_date, Date end_date);
 	void find_room_min_beds(const int min_amount_of_beds_needed, Room& room, bool& at_least_one_room_was_found);
 	bool close_room(const int room_number, const std::string note, const Date start_date, const Date end_date);
+
 };
+
 

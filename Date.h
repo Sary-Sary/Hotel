@@ -27,7 +27,7 @@ struct Date
 	//Checks which date is further in the future.
 	bool operator>(const Date& date) {
 
-		//Checks which year is larger. If neither are, the two dates share the same date
+		//Checks which year is larger. If neither are, the two dates share the same year.
 		if (year > date.year) return 1;
 		if (year < date.year) return 0;
 
@@ -100,7 +100,7 @@ struct Date
 
 		my_file.write((char*)&day, sizeof(day));
 		my_file.write((char*)&month, sizeof(month));
-		my_file.write((char*)&year, sizeof(year));
+		my_file.write((char*)&year, sizeof(year));		
 
 		return;
 	}

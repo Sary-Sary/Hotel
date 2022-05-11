@@ -184,6 +184,7 @@ void Hotel_AVL::all_free_rooms_during_date(std::list <Room>& all_free_rooms, Roo
 
 	if (tree->room.get_is_room_closed() == false) {
 
+		all_free_rooms.push_back(tree->room);
 		all_free_rooms_during_date(all_free_rooms, tree->left, date);
 		all_free_rooms_during_date(all_free_rooms, tree->right, date);
 		return;
@@ -251,6 +252,14 @@ void Hotel_AVL::find_room_min_beds
 		(Room_Node* tree, int current_min_amount_of_beds, const int min_amount_of_beds_needed, Room& room, bool& at_least_one_room_was_found) {
 
 	if (tree == nullptr) return;
+
+	if (tree->room.get_is_room_closed() == true) {
+
+		find_room_min_beds(tree->left, current_min_amount_of_beds, min_amount_of_beds_needed, room, at_least_one_room_was_found);
+		find_room_min_beds(tree->right, current_min_amount_of_beds, min_amount_of_beds_needed, room, at_least_one_room_was_found);
+		return;
+
+	}
 
 	if (tree->room.get_amount_of_beds() >= min_amount_of_beds_needed) {
 
