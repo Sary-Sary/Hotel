@@ -1,0 +1,6 @@
+Room: 5
+Amount of days: 1
+___________
+Room: 6
+Amount of days: 1
+___________

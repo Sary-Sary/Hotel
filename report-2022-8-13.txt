@@ -1,0 +1,15 @@
+Room: 102
+Amount of days: 57
+___________
+Room: 200
+Amount of days: 23
+___________
+Room: 201
+Amount of days: 27
+___________
+Room: 300
+Amount of days: 56
+___________
+Room: 400
+Amount of days: 31
+___________

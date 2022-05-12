@@ -6,12 +6,20 @@
 
 struct Date
 {
-	unsigned day;
-	unsigned month;
-	unsigned year;
+	unsigned day; /**< Date's day. A number from 1 to 31 or less depending on the month. */
+	unsigned month;  /**< Date's month. A number from 1 to 12. */
+	unsigned year; /**< Date's year. Theoretically from -inf to +inf. In the program, must have a positive value. */
 
+
+	/************************************************
+	 *  Default Constructor.
+	 ***********************************************/
 	Date() : day(1), month(1), year(1) {}
 
+
+	/************************************************
+	 *  Constructor with given data.
+	 ***********************************************/
 	Date(unsigned day_, unsigned month_, unsigned year_) {
 
 		bool valid_date = validate_date(day_, month_, year_);
@@ -24,7 +32,10 @@ struct Date
 
 	}
 
-	//Checks which date is further in the future.
+
+	/************************************************
+	 *  Function to check which date is later.
+	 ***********************************************/
 	bool operator>(const Date& date) {
 
 		//Checks which year is larger. If neither are, the two dates share the same year.
@@ -43,37 +54,61 @@ struct Date
 
 	}
 	
+
+	/************************************************
+	 *  Function to check if two dates fall on the same date.
+	 ***********************************************/
 	bool operator== (const Date& date) {
 
 		return year == date.year && month == date.month && day == date.day;
 
 	}
 
+
+	/************************************************
+	 *  Function to check if a date is before another date.
+	 ***********************************************/
 	bool operator< (const Date& date) {
 
-		return !(*this > date);
+		return !(*this > date) && *this != date;
 
 	}
 
+
+	/************************************************
+	 *  Function to check if a date is later to or on the same date as another date.
+	 ***********************************************/
 	bool operator>= (const Date& date) {
 
 		return *this > date || *this == date;
 
 	}
 
+
+	/************************************************
+	 *  Function to check if a date is before or on the same date as another date.
+	 ***********************************************/
 	bool operator<= (const Date& date) {
 
 		return *this < date || *this == date;
 
 	}
 
+
+	/************************************************
+	 *  Function to check if a date is on a different date than another date.
+	 ***********************************************/
 	bool operator!= (const Date& date) {
 
 		return !(*this == date);
 
 	}
 
-	int operator- (const Date& date) {
+
+	/************************************************
+	 *  Function to check the amount of days between two dates.
+	 ***********************************************/
+	int operator- (const Date& date) const {
 
 		//Formula to conver Julian Calender Day to Julian Day Number
 		// 367 * Y - (7 * (Y + 5001 + (M - 9)/7))/4 + (275 * M)/9 + D + 1729777
@@ -87,8 +122,13 @@ struct Date
 
 	}
 
+
+	/************************************************
+	 *  Function to read a date from a file.
+	 ***********************************************/
 	void read_from_file(std::ifstream& my_file) {
 
+		//Reads the day, month and year
 		my_file.read((char*)&day, sizeof(day));
 		my_file.read((char*)&month, sizeof(month));
 		my_file.read((char*)&year, sizeof(year));
@@ -96,8 +136,12 @@ struct Date
 		return;
 	}
 
+	/************************************************
+	 *  Function to write a date to a file.
+	 ***********************************************/
 	void write_to_file(std::ofstream& my_file) {
 
+		//Writes the day, month and years
 		my_file.write((char*)&day, sizeof(day));
 		my_file.write((char*)&month, sizeof(month));
 		my_file.write((char*)&year, sizeof(year));		

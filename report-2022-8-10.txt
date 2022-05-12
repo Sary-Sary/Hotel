@@ -1,0 +1,3 @@
+Room: 300
+Amount of days: 56
+___________
